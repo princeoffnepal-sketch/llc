@@ -26,7 +26,7 @@ npm run build && npm start
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | Production | Public URL, no trailing slash. Used for canonical URLs, sitemap, robots, social previews, structured data, and the form's origin check. Falls back to `http://localhost:3000`. |
+| `NEXT_PUBLIC_SITE_URL` | Production | Public URL, no trailing slash. Used for canonical URLs, sitemap, robots, social previews, structured data, and the form's origin check. On Vercel it falls back to the project's production domain; elsewhere to `http://localhost:3000`. |
 | `RESEND_API_KEY` | For the form | Resend API key. |
 | `CONTACT_TO_EMAIL` | For the form | Inbox that receives inquiries (comma-separate for several). |
 | `CONTACT_FROM_EMAIL` | For the form | Sender on a domain verified in Resend, e.g. `Lami Ventures Website <website@yourdomain.com>`. |

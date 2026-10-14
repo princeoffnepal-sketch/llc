@@ -39,7 +39,11 @@ type SiteConfig = {
   };
 };
 
-const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/+$/, "");
+// Prefer the explicit site URL; on Vercel, fall back to the project's production domain.
+const vercelUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+const configuredUrl = (process.env.NEXT_PUBLIC_SITE_URL || (vercelUrl ? `https://${vercelUrl}` : ""))
+  .trim()
+  .replace(/\/+$/, "");
 
 export const siteConfig: SiteConfig = {
   name: "Lami Ventures",
