@@ -1,26 +1,182 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-ink: #15171b;
+  --color-ink-2: #1d2026;
+  --color-ink-3: #2a2e36;
+  --color-ink-line: #33373f;
+  --color-paper: #f5f2ec;
+  --color-paper-2: #ece8df;
+  --color-paper-line: #d9d3c7;
+  --color-muted: #5b5e66;
+  --color-mist: #a3a6ad;
+  --color-accent: #2b50ff;
+  --color-accent-strong: #2443e6;
+  --color-accent-soft: #7d95ff;
+  --color-danger: #b42318;
+  --color-danger-soft: #ff8a80;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-inter-tight), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .on-dark :focus-visible {
+    outline-color: var(--color-accent-soft);
+  }
+
+  /* Anchor targets clear the sticky header. */
+  [id] {
+    scroll-margin-top: 6rem;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: 84rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .container-page {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 560;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  .lede {
+    text-wrap: pretty;
+  }
+
+  /* Faint drafting grid used behind dark sections. */
+  .grid-texture {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+}
+
+/* ---------- Hero entrance (CSS-only, so content is never hidden without JS) ---------- */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.enter {
+  animation: rise-in 0.9s var(--ease-out-quint) both;
+  animation-delay: calc(var(--i, 0) * 90ms + 60ms);
+}
+
+.enter-fade {
+  animation: fade-in 1.4s var(--ease-out-quint) both;
+  animation-delay: 0.35s;
+}
+
+/* ---------- Hero visual motion ---------- */
+@keyframes drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -8px, 0); }
+}
+
+@keyframes drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, 7px, 0); }
+}
+
+@keyframes flow {
+  to { stroke-dashoffset: -120; }
+}
+
+@keyframes pulse-node {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.35); }
+}
+
+.drift-a {
+  animation: drift-a 9s ease-in-out infinite;
+}
+.drift-b {
+  animation: drift-b 11s ease-in-out infinite;
+}
+.flow {
+  stroke-dasharray: 4 16;
+  animation: flow 6s linear infinite;
+}
+.pulse-node {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse-node 4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
